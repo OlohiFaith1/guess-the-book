@@ -35,7 +35,6 @@ export default function GameScreen({ game, onShare, onAddLine }) {
   const prevHint = useRef(hintVisible)
   const prevShake = useRef(shakeInput)
 
-  // Page-turn sound when advancing to the next quote
   useEffect(() => {
     if (currentIndex > prevIndex.current) {
       playPageTurn()
@@ -43,18 +42,15 @@ export default function GameScreen({ game, onShare, onAddLine }) {
     prevIndex.current = currentIndex
   }, [currentIndex, playPageTurn])
 
-  // Correct answer sound
   useEffect(() => {
     if (isCelebrating) playCorrect()
   }, [isCelebrating, playCorrect])
 
-  // Incorrect guess sound
   useEffect(() => {
     if (shakeInput && !prevShake.current) playIncorrect()
     prevShake.current = shakeInput
   }, [shakeInput, playIncorrect])
 
-  // Hint reveal sound
   useEffect(() => {
     if (hintVisible && !prevHint.current) playHint()
     prevHint.current = hintVisible
@@ -64,7 +60,7 @@ export default function GameScreen({ game, onShare, onAddLine }) {
 
   return (
     <motion.div
-      className="flex-1 flex flex-col min-h-0 overflow-y-auto"
+      className="flex-1 flex flex-col min-h-0 h-full overflow-hidden"
       variants={fadeUp}
       initial="hidden"
       animate="visible"
@@ -76,33 +72,35 @@ export default function GameScreen({ game, onShare, onAddLine }) {
         onSkip={skipQuote}
       />
 
-      <QuoteCard
-        quoteKey={currentIndex}
-        quote={currentQuote.quote}
-        hint={currentQuote.hint}
-        hintVisible={hintVisible}
-        guess={guess}
-        onGuessChange={setGuess}
-        onSubmit={submitGuess}
-        disabled={answerRevealed || isCelebrating}
-        feedback={feedback}
-        isCelebrating={isCelebrating}
-        answerRevealed={answerRevealed}
-        onContinue={continueAfterReveal}
-        revealedAnswer={currentQuote.answer}
-        revealedAuthor={currentQuote.author}
-        shakeInput={shakeInput}
-      />
+      <div className="flex-1 min-h-0 flex flex-col overflow-hidden">
+        <QuoteCard
+          quoteKey={currentIndex}
+          quote={currentQuote.quote}
+          hint={currentQuote.hint}
+          hintVisible={hintVisible}
+          guess={guess}
+          onGuessChange={setGuess}
+          onSubmit={submitGuess}
+          disabled={answerRevealed || isCelebrating}
+          feedback={feedback}
+          isCelebrating={isCelebrating}
+          answerRevealed={answerRevealed}
+          onContinue={continueAfterReveal}
+          revealedAnswer={currentQuote.answer}
+          revealedAuthor={currentQuote.author}
+          shakeInput={shakeInput}
+        />
 
-      {!answerRevealed && !isCelebrating && (
-        <div className="px-5">
-          <AttemptsIndicator
-            attemptsLeft={attemptsLeft}
-            maxAttempts={maxAttempts}
-          />
-          <HintButton onClick={showHint} hintVisible={hintVisible} />
-        </div>
-      )}
+        {!answerRevealed && !isCelebrating && (
+          <div className="shrink-0 px-5">
+            <AttemptsIndicator
+              attemptsLeft={attemptsLeft}
+              maxAttempts={maxAttempts}
+            />
+            <HintButton onClick={showHint} hintVisible={hintVisible} />
+          </div>
+        )}
+      </div>
 
       <BottomActions onShare={onShare} onAddLine={onAddLine} />
     </motion.div>

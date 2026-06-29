@@ -7,7 +7,7 @@ import AnimatedButton from "./ui/AnimatedButton"
  */
 export default function ProgressGrid({ current, total, onSkip }) {
   return (
-    <div className="px-5 pt-12">
+    <div className="px-5 pt-10 shrink-0">
       <div className="flex items-center justify-between mb-4">
         <span className="text-sm font-semibold text-gray-900">
           Quote {current + 1} of {total}

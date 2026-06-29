@@ -56,7 +56,8 @@ export default function App() {
 
   return (
     <PhoneFrame>
-      <AnimatePresence mode="wait">
+      <div className="flex-1 flex flex-col min-h-0 overflow-hidden">
+        <AnimatePresence mode="wait">
         {screen === SCREENS.LOADING && (
           <LoadingScreen key="loading" onComplete={handleLoadingComplete} />
         )}
@@ -78,7 +79,8 @@ export default function App() {
             onRestart={handleRestart}
           />
         )}
-      </AnimatePresence>
+        </AnimatePresence>
+      </div>
 
       <ShareModal isOpen={shareOpen} onClose={() => setShareOpen(false)} />
       <AddLineModal

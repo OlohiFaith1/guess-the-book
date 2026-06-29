@@ -3,7 +3,7 @@ import AnimatedButton from "./ui/AnimatedButton"
 /** Share and Add Line icon buttons at the bottom of the game screen. */
 export default function BottomActions({ onShare, onAddLine }) {
   return (
-    <div className="px-5 pb-8 pt-4 flex items-center justify-between mt-auto">
+    <div className="px-5 pt-3 pb-[max(1.25rem,env(safe-area-inset-bottom))] flex items-center justify-between shrink-0">
       <AnimatedButton
         variant="ghost"
         onClick={onShare}

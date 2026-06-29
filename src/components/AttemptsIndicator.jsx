@@ -3,7 +3,7 @@ import { motion } from "framer-motion"
 /** Three dots showing remaining attempts — used dots fade to gray smoothly. */
 export default function AttemptsIndicator({ attemptsLeft, maxAttempts }) {
   return (
-    <div className="flex flex-col items-center mt-5">
+    <div className="flex flex-col items-center mt-3 shrink-0">
       <div className="flex gap-2" aria-label={`${attemptsLeft} attempts left`}>
         {Array.from({ length: maxAttempts }).map((_, i) => (
           <motion.span

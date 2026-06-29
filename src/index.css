@@ -19,106 +19,189 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* ── Desktop iPhone frame (bezel only — screen stays white) ── */
+/* ── Phone backdrop ── */
+.phone-backdrop {
+  width: 100%;
+  height: 100dvh;
+  display: flex;
+  justify-content: center;
+  background: #ffffff;
+  overflow: hidden;
+}
 
-.iphone-bezel {
+@media (min-width: 1024px) {
+  .phone-backdrop {
+    min-height: 100vh;
+    height: auto;
+    align-items: center;
+    padding: 2rem;
+    background: #000000;
+  }
+}
+
+/* ── iPhone frame root ── */
+.iphone-frame {
   position: relative;
   width: 100%;
   height: 100%;
-  background: #1c1c1e;
-  border-radius: 54px;
-  padding: 11px;
-  border: 1px solid #3a3a3c;
-  box-shadow:
-    0 0 0 1px rgba(255, 255, 255, 0.06),
-    0 30px 80px rgba(0, 0, 0, 0.55),
-    0 12px 32px rgba(0, 0, 0, 0.35);
+  flex-shrink: 0;
 }
 
-.iphone-screen {
+@media (min-width: 1024px) {
+  .iphone-frame {
+    width: 430px;
+    height: 884px;
+  }
+}
+
+/* Hide all hardware below desktop breakpoint */
+.iphone-hardware {
+  display: none;
+}
+
+/* ── App screen (full viewport on mobile, clipped on desktop) ── */
+.iphone-app-screen {
   position: relative;
   width: 100%;
   height: 100%;
   background: #ffffff;
-  border-radius: 44px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
 }
 
-.iphone-dynamic-island {
-  position: absolute;
-  top: 12px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 126px;
-  height: 37px;
-  background: #000;
-  border-radius: 20px;
-  z-index: 50;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-}
-
-.iphone-content {
+.iphone-app-chrome {
+  position: relative;
   flex: 1;
-  overflow: hidden;
   display: flex;
   flex-direction: column;
   min-height: 0;
+  height: 100%;
+  overflow: hidden;
+  background: #ffffff;
 }
 
-.iphone-home-indicator {
-  position: absolute;
-  bottom: 8px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 134px;
-  height: 5px;
-  background: #1a1a1a;
-  border-radius: 3px;
-  z-index: 50;
-  opacity: 0.25;
-}
+/* ── Desktop hardware mockup (1024px+) ── */
+@media (min-width: 1024px) {
+  .iphone-hardware {
+    display: block;
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 30;
+  }
 
-/* Side hardware buttons */
-.iphone-btn-silent {
-  position: absolute;
-  left: -3px;
-  top: 140px;
-  width: 3px;
-  height: 28px;
-  background: #333;
-  border-radius: 2px 0 0 2px;
-}
+  /* Metallic outer frame */
+  .iphone-outer-rim {
+    position: absolute;
+    inset: 0;
+    border-radius: 58px;
+    background: linear-gradient(
+      160deg,
+      #5a5a5c 0%,
+      #3a3a3c 18%,
+      #1c1c1e 45%,
+      #2c2c2e 72%,
+      #48484a 100%
+    );
+    box-shadow:
+      0 0 0 1px rgba(255, 255, 255, 0.1),
+      0 2px 4px rgba(255, 255, 255, 0.05) inset,
+      0 40px 100px rgba(0, 0, 0, 0.65),
+      0 12px 36px rgba(0, 0, 0, 0.45);
+  }
 
-.iphone-btn-volume-up {
-  position: absolute;
-  left: -3px;
-  top: 190px;
-  width: 3px;
-  height: 48px;
-  background: #333;
-  border-radius: 2px 0 0 2px;
-}
+  /* Black inner bezel */
+  .iphone-inner-bezel {
+    position: absolute;
+    inset: 4px;
+    border-radius: 54px;
+    background: #0b0b0b;
+    box-shadow:
+      inset 0 0 0 1px rgba(255, 255, 255, 0.04),
+      inset 0 2px 6px rgba(0, 0, 0, 0.6);
+  }
 
-.iphone-btn-volume-down {
-  position: absolute;
-  left: -3px;
-  top: 250px;
-  width: 3px;
-  height: 48px;
-  background: #333;
-  border-radius: 2px 0 0 2px;
-}
+  /* Screen cutout — app is clipped here */
+  .iphone-app-screen {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    right: 16px;
+    bottom: 16px;
+    border-radius: 44px;
+    z-index: 10;
+  }
 
-.iphone-btn-power {
-  position: absolute;
-  right: -3px;
-  top: 200px;
-  width: 3px;
-  height: 72px;
-  background: #333;
-  border-radius: 0 2px 2px 0;
+  /* Dynamic Island (device chrome, not app UI) */
+  .iphone-dynamic-island {
+    position: absolute;
+    top: 28px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 126px;
+    height: 37px;
+    background: #000000;
+    border-radius: 20px;
+    z-index: 40;
+    box-shadow:
+      0 1px 3px rgba(0, 0, 0, 0.5),
+      inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  }
+
+  /* Home indicator (device chrome) */
+  .iphone-home-indicator {
+    position: absolute;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 134px;
+    height: 5px;
+    background: rgba(255, 255, 255, 0.85);
+    border-radius: 3px;
+    z-index: 40;
+    opacity: 0.35;
+  }
+
+  /* Side buttons */
+  .iphone-btn {
+    position: absolute;
+    background: linear-gradient(90deg, #3a3a3c, #5a5a5c, #3a3a3c);
+    border-radius: 2px;
+    z-index: 35;
+  }
+
+  .iphone-btn-action {
+    left: -3px;
+    top: 148px;
+    width: 4px;
+    height: 30px;
+    border-radius: 2px 0 0 2px;
+  }
+
+  .iphone-btn-vol-up {
+    left: -3px;
+    top: 196px;
+    width: 4px;
+    height: 54px;
+    border-radius: 2px 0 0 2px;
+  }
+
+  .iphone-btn-vol-down {
+    left: -3px;
+    top: 262px;
+    width: 4px;
+    height: 54px;
+    border-radius: 2px 0 0 2px;
+  }
+
+  .iphone-btn-power {
+    right: -3px;
+    top: 210px;
+    width: 4px;
+    height: 80px;
+    border-radius: 0 2px 2px 0;
+  }
 }
 
 /* Respect users who prefer reduced motion */

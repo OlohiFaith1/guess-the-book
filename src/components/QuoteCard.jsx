@@ -35,15 +35,15 @@ export default function QuoteCard({
   }
 
   return (
-    <div className="px-5 mt-6">
-      <p className="text-center text-sm text-text-secondary mb-4">
+    <div className="px-5 mt-4 flex-1 min-h-0 flex flex-col">
+      <p className="text-center text-sm text-text-secondary mb-3 shrink-0">
         Read the line and guess the book.
       </p>
 
       <AnimatePresence mode="wait">
         <motion.div
           key={quoteKey}
-          className="bg-card-outer rounded-2xl p-3 shadow-sm relative"
+          className="bg-card-outer rounded-2xl p-3 shadow-sm relative flex-1 min-h-0 flex flex-col"
           variants={quoteCrossfade}
           initial="hidden"
           animate="visible"
@@ -52,11 +52,11 @@ export default function QuoteCard({
           <Confetti active={isCelebrating} />
 
           <motion.div
-            className="bg-white rounded-xl p-5 shadow-sm min-h-[200px] flex flex-col relative"
+            className="bg-white rounded-xl p-5 shadow-sm flex-1 min-h-0 flex flex-col relative"
             variants={celebrateBounce}
             animate={isCelebrating ? "celebrate" : "initial"}
           >
-            <blockquote className="font-serif text-[19px] leading-relaxed text-gray-900 flex-1">
+            <blockquote className="font-serif text-[19px] leading-relaxed text-gray-900 flex-1 min-h-0 overflow-y-auto">
               &ldquo;{quote}&rdquo;
             </blockquote>
 
