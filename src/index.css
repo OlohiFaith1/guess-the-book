@@ -55,7 +55,8 @@ body {
 }
 
 /* Hide all hardware below desktop breakpoint */
-.iphone-hardware {
+.iphone-hardware-back,
+.iphone-hardware-front {
   display: none;
 }
 
@@ -83,12 +84,22 @@ body {
 
 /* ── Desktop hardware mockup (1024px+) ── */
 @media (min-width: 1024px) {
-  .iphone-hardware {
+  /* Frame sits behind the screen (rim + bezel) */
+  .iphone-hardware-back {
     display: block;
     position: absolute;
     inset: 0;
     pointer-events: none;
-    z-index: 30;
+    z-index: 5;
+  }
+
+  /* Overlays sit in front of the screen (island, buttons, home indicator) */
+  .iphone-hardware-front {
+    display: block;
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 40;
   }
 
   /* Metallic outer frame */
@@ -130,7 +141,7 @@ body {
     right: 16px;
     bottom: 16px;
     border-radius: 44px;
-    z-index: 10;
+    z-index: 20;
   }
 
   /* Dynamic Island (device chrome, not app UI) */
