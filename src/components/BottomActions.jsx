@@ -10,19 +10,28 @@ export default function BottomActions({ onShare, onAddLine }) {
         className="p-2 rounded-lg"
         aria-label="Share game"
       >
-        <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true">
+        {/* iOS-style share icon (square and arrow up) */}
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
           <path
-            d="M14 6L18 2M18 2H14M18 2V6"
+            d="M12 3V15"
             stroke="currentColor"
-            strokeWidth="1.5"
+            strokeWidth="1.8"
             strokeLinecap="round"
             strokeLinejoin="round"
           />
           <path
-            d="M18 11C18 14.866 14.866 18 11 18C7.134 18 4 14.866 4 11C4 7.134 7.134 4 11 4H13"
+            d="M7 8L12 3L17 8"
             stroke="currentColor"
-            strokeWidth="1.5"
+            strokeWidth="1.8"
             strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+          <path
+            d="M5 12V19C5 20.1046 5.89543 21 7 21H17C18.1046 21 19 20.1046 19 19V12"
+            stroke="currentColor"
+            strokeWidth="1.8"
+            strokeLinecap="round"
+            strokeLinejoin="round"
           />
         </svg>
       </AnimatedButton>
@@ -30,13 +39,14 @@ export default function BottomActions({ onShare, onAddLine }) {
       <AnimatedButton
         variant="ghost"
         onClick={onAddLine}
-        className="p-2 rounded-lg"
-        aria-label="Add a line"
+        className="px-3 py-2 rounded-lg gap-1.5 text-sm"
+        aria-label="Add your line"
       >
-        <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true">
+        <svg width="18" height="18" viewBox="0 0 22 22" fill="none" aria-hidden="true">
           <rect x="3" y="3" width="16" height="16" rx="2" stroke="currentColor" strokeWidth="1.5" />
           <path d="M11 7V15M7 11H15" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
         </svg>
+        Add your line
       </AnimatedButton>
     </div>
   )

@@ -77,6 +77,8 @@ export default function App() {
             score={game.score}
             total={game.totalQuotes}
             onRestart={handleRestart}
+            onShare={() => setShareOpen(true)}
+            onAddLine={() => setAddLineOpen(true)}
           />
         )}
         </AnimatePresence>

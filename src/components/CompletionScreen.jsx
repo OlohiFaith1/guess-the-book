@@ -4,8 +4,8 @@ import { fadeUp } from "../animations/motionVariants"
 import { useSound } from "../contexts/SoundContext"
 import AnimatedButton from "./ui/AnimatedButton"
 
-/** Shown after all quotes — displays final score and a Restart button. */
-export default function CompletionScreen({ score, total, onRestart }) {
+/** Shown after all quotes — displays final score, sharing, and add-a-line prompts. */
+export default function CompletionScreen({ score, total, onRestart, onShare, onAddLine }) {
   const { playCompletion } = useSound()
   const played = useRef(false)
   const percentage = total > 0 ? Math.round((score / total) * 100) : 0
@@ -58,11 +58,44 @@ export default function CompletionScreen({ score, total, onRestart }) {
         <p className="text-xs text-text-muted uppercase tracking-wider">Correct guesses</p>
       </motion.div>
 
-      <AnimatedButton
-        onClick={onRestart}
-        className="mt-10 w-full max-w-[280px] py-3.5 rounded-xl text-sm"
+      <motion.div
+        className="mt-10 w-full max-w-[280px] flex flex-col gap-3"
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.4, duration: 0.45 }}
       >
-        Restart
+        <AnimatedButton
+          onClick={onShare}
+          className="w-full py-3.5 rounded-xl text-sm"
+        >
+          Share with friends
+        </AnimatedButton>
+
+        <div className="flex gap-3">
+          <AnimatedButton
+            variant="secondary"
+            onClick={onRestart}
+            className="flex-1 py-3 rounded-xl text-sm border border-gray-200"
+          >
+            Restart
+          </AnimatedButton>
+        </div>
+      </motion.div>
+
+      <p className="text-text-secondary text-sm mt-8 max-w-[260px]">
+        Now, it's your turn — add a line from a book you've read.
+      </p>
+
+      <AnimatedButton
+        variant="ghost"
+        onClick={onAddLine}
+        className="mt-3 px-4 py-2.5 rounded-lg gap-1.5 text-sm border border-forest/20"
+      >
+        <svg width="16" height="16" viewBox="0 0 22 22" fill="none" aria-hidden="true">
+          <rect x="3" y="3" width="16" height="16" rx="2" stroke="currentColor" strokeWidth="1.5" />
+          <path d="M11 7V15M7 11H15" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+        </svg>
+        Add your line
       </AnimatedButton>
     </motion.div>
   )
