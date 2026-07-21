@@ -6,7 +6,7 @@ export default function HintButton({ onClick, hintVisible }) {
     <AnimatedButton
       onClick={onClick}
       disabled={hintVisible}
-      className="w-full mt-4 py-3.5 px-4 bg-hint-bg rounded-xl gap-2 text-forest text-sm disabled:opacity-60 shrink-0"
+      className="w-full mt-4 py-3.5 px-4 bg-[#8FC9AE] shadow-sm rounded-xl gap-2 text-white text-sm font-semibold disabled:opacity-60 disabled:shadow-none shrink-0"
       aria-label={hintVisible ? "Hint already revealed" : "Get a hint"}
     >
       <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">

@@ -38,13 +38,17 @@ function FormField({ label, id, placeholder, value, onChange, error, onTypingKey
 }
 
 /**
- * Add Line modal — validates inputs and adds quotes to the in-memory list.
+ * Add Line modal — validates inputs and submits the quote for review.
+ * Submissions are stored as 'pending' and reviewed manually; they do not
+ * appear in anyone's game immediately.
  */
 export default function AddLineModal({ isOpen, onClose, onSubmit }) {
   const [line, setLine] = useState("")
   const [answer, setAnswer] = useState("")
   const [author, setAuthor] = useState("")
   const [errors, setErrors] = useState({})
+  const [submitting, setSubmitting] = useState(false)
+  const [submitError, setSubmitError] = useState("")
 
   const { playKeyboardType, enabled, ready } = useSound()
   const handleTypingKeyDown = useTypingKeyDown(playKeyboardType, { enabled, ready })
@@ -55,14 +59,17 @@ export default function AddLineModal({ isOpen, onClose, onSubmit }) {
       setAnswer("")
       setAuthor("")
       setErrors({})
+      setSubmitError("")
+      setSubmitting(false)
     }
   }, [isOpen])
 
   const handleClose = () => {
+    if (submitting) return
     onClose()
   }
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const validationErrors = validateAddLineForm({
       quote: line,
       answer,
@@ -74,14 +81,21 @@ export default function AddLineModal({ isOpen, onClose, onSubmit }) {
       return
     }
 
-    onSubmit({
-      quote: line.trim(),
-      answer: answer.trim(),
-      author: author.trim(),
-      hint: `A line from "${answer.trim()}" by ${author.trim()}.`,
-    })
+    setSubmitting(true)
+    setSubmitError("")
 
-    onClose()
+    try {
+      await onSubmit({
+        quote: line.trim(),
+        bookTitle: answer.trim(),
+        author: author.trim(),
+      })
+      onClose()
+    } catch (err) {
+      setSubmitError(err.message || "Something went wrong. Please try again.")
+    } finally {
+      setSubmitting(false)
+    }
   }
 
   const handleFieldChange = (field, value, setter) => {
@@ -120,8 +134,8 @@ export default function AddLineModal({ isOpen, onClose, onSubmit }) {
         </div>
 
         <p className="text-xs text-text-secondary leading-relaxed mb-6">
-          To help us increase the number of lines we have, kindly share famous
-          lines from some of your favourite books.
+          Share a famous line from a book you've read. Submissions are
+          reviewed before they join the game — yours won't appear right away.
         </p>
 
         <form
@@ -158,16 +172,27 @@ export default function AddLineModal({ isOpen, onClose, onSubmit }) {
             error={errors.author}
           />
 
+          {submitError && (
+            <p className="text-xs text-red-500 mt-1" role="alert">
+              {submitError}
+            </p>
+          )}
+
           <div className="flex items-center justify-between mt-6">
             <AnimatedButton
               variant="secondary"
               onClick={handleClose}
+              disabled={submitting}
               className="text-sm px-2 py-1 rounded-md"
             >
               Cancel
             </AnimatedButton>
-            <AnimatedButton onClick={handleSubmit} className="px-5 py-2.5 rounded-lg text-sm">
-              Submit line
+            <AnimatedButton
+              onClick={handleSubmit}
+              disabled={submitting}
+              className="px-5 py-2.5 rounded-lg text-sm"
+            >
+              {submitting ? "Submitting…" : "Submit line"}
             </AnimatedButton>
           </div>
         </form>

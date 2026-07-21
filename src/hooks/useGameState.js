@@ -123,23 +123,6 @@ export function useGameState(allQuotes) {
     advanceQuote()
   }, [advanceQuote])
 
-  /**
-   * Add a user-submitted quote to the active session.
-   * Makes new lines playable immediately without a refresh.
-   */
-  const appendQuote = useCallback(
-    (newQuote) => {
-      if (isComplete) return
-
-      setSessionQuotes((prev) => {
-        // Avoid duplicates by matching quote text
-        if (prev.some((q) => q.quote === newQuote.quote)) return prev
-        return [...prev, newQuote]
-      })
-    },
-    [isComplete],
-  )
-
   /** Restart the entire game from quote 1. */
   const restart = useCallback(
     (freshQuotes) => {
@@ -176,7 +159,6 @@ export function useGameState(allQuotes) {
     skipQuote,
     showHint,
     continueAfterReveal,
-    appendQuote,
     restart,
   }
 }

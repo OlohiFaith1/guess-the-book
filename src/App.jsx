@@ -8,7 +8,8 @@ import ShareModal from "./components/ShareModal"
 import AddLineModal from "./components/AddLineModal"
 import SuccessToast from "./components/SuccessToast"
 import { useGameState } from "./hooks/useGameState"
-import { quotes as initialQuotes } from "./data/quotes"
+import { quotes as curatedQuotes } from "./data/quotes"
+import { submitQuote, fetchApprovedQuotes } from "./lib/quoteSubmissions"
 
 /** App screens: loading → playing → complete */
 const SCREENS = {
@@ -19,16 +20,34 @@ const SCREENS = {
 
 /**
  * Top-level app component.
- * Owns the master quote list so Add Line updates are immediately playable.
+ * Owns the master quote list: curated quotes plus any approved (and
+ * AI-hinted) community submissions fetched from Supabase.
  */
 export default function App() {
   const [screen, setScreen] = useState(SCREENS.LOADING)
-  const [allQuotes, setAllQuotes] = useState(initialQuotes)
+  // Curated quotes ship with the app and are always available; approved
+  // community submissions (with their AI-generated hint already attached)
+  // are fetched once on load and merged in alongside them.
+  const [allQuotes, setAllQuotes] = useState(curatedQuotes)
   const [shareOpen, setShareOpen] = useState(false)
   const [addLineOpen, setAddLineOpen] = useState(false)
   const [toastVisible, setToastVisible] = useState(false)
 
   const game = useGameState(allQuotes)
+
+  // Pull in approved + hinted community quotes once, on load.
+  useEffect(() => {
+    let cancelled = false
+
+    fetchApprovedQuotes().then((communityQuotes) => {
+      if (cancelled || communityQuotes.length === 0) return
+      setAllQuotes([...curatedQuotes, ...communityQuotes])
+    })
+
+    return () => {
+      cancelled = true
+    }
+  }, [])
 
   // Switch to completion screen when the game finishes
   useEffect(() => {
@@ -41,12 +60,15 @@ export default function App() {
     setScreen(SCREENS.GAME)
   }, [])
 
-  /** Add a new quote to the master list and the active game session. */
-  const handleAddQuote = (newQuote) => {
-    setAllQuotes((prev) => [...prev, newQuote])
-    game.appendQuote(newQuote)
+  /**
+   * Submit a community line for review. It's stored as 'pending' and does
+   * NOT appear in this or anyone else's game immediately — only after it's
+   * manually approved and has an AI-generated hint attached.
+   */
+  const handleAddQuote = async ({ quote, bookTitle, author }) => {
+    await submitQuote({ quote, bookTitle, author })
     setToastVisible(true)
-    setTimeout(() => setToastVisible(false), 2800)
+    setTimeout(() => setToastVisible(false), 3200)
   }
 
   const handleRestart = () => {
@@ -90,7 +112,10 @@ export default function App() {
         onClose={() => setAddLineOpen(false)}
         onSubmit={handleAddQuote}
       />
-      <SuccessToast message="Line added — it’s now in your game!" visible={toastVisible} />
+      <SuccessToast
+        message="Thanks! Your line is in for review — we'll add it once it's approved."
+        visible={toastVisible}
+      />
     </PhoneFrame>
   )
 }
