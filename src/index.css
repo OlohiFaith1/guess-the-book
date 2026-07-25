@@ -238,6 +238,18 @@ body {
   }
 }
 
+/* iOS Safari auto-zooms into any input/textarea/select with a computed
+   font-size under 16px, which then leaves the page's zoom level stuck
+   until the user manually pinches back out. Force 16px on touch/mobile
+   widths only, so desktop keeps its normal 14px (text-sm) inputs. */
+@media (max-width: 1023px) {
+  input,
+  textarea,
+  select {
+    font-size: 16px;
+  }
+}
+
 /* Respect users who prefer reduced motion */
 @media (prefers-reduced-motion: reduce) {
   *,
