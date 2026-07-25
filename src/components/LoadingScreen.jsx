@@ -3,6 +3,7 @@ import { motion } from "framer-motion"
 import { useTypewriter } from "../hooks/useTypewriter"
 import { useSound } from "../contexts/SoundContext"
 import { fadeUp } from "../animations/motionVariants"
+import { QUOTES_PER_ROUND } from "../constants/game"
 
 const HEADLINE = "Can you recognize a book from a single line?"
 const LOADING_TEXT = "[Loading famous lines…]"
@@ -83,14 +84,12 @@ export default function LoadingScreen({ onComplete }) {
       </h1>
 
       {isComplete && (
-        <motion.p
-          className="text-text-muted text-sm mt-6"
-          variants={fadeUp}
-          initial="hidden"
-          animate="visible"
-        >
-          {LOADING_TEXT}
-        </motion.p>
+        <motion.div variants={fadeUp} initial="hidden" animate="visible">
+          <p className="text-forest text-sm font-medium mt-6">
+            {QUOTES_PER_ROUND} quotes. One session. How many can you get?
+          </p>
+          <p className="text-text-muted text-sm mt-2">{LOADING_TEXT}</p>
+        </motion.div>
       )}
 
       <span className="sr-only" role="status">

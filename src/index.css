@@ -43,7 +43,11 @@ body {
     background-size: 24px 24px;
   }
 
-  /* On desktop the stage shrinks to fit its content and centers it, above the decor layer */
+  /* On desktop the stage shrinks to fit its content and centers it, above the
+     decor layer. The float animates `transform` only (GPU-composited, never
+     triggers layout), and pauses the instant an interactive element inside
+     the phone is focused — so typing, clicking, and tapping always land on
+     a perfectly stable target instead of a slowly drifting one. */
   .iphone-stage {
     position: relative;
     z-index: 10;
@@ -53,6 +57,11 @@ body {
     flex-direction: column;
     align-items: center;
     animation: iphone-float 6s ease-in-out infinite;
+    will-change: transform;
+  }
+
+  .iphone-stage:focus-within {
+    animation-play-state: paused;
   }
 
   /* Soft, natural contact shadow grounding the phone on the backdrop —

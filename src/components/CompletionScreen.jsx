@@ -66,9 +66,32 @@ export default function CompletionScreen({ score, total, onRestart, onShare, onA
       >
         <AnimatedButton
           onClick={onShare}
-          className="w-full py-3.5 rounded-xl text-sm"
+          className="w-full py-3.5 rounded-xl text-sm gap-2"
         >
-          Share with friends
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path
+              d="M12 3V15"
+              stroke="currentColor"
+              strokeWidth="1.8"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+            <path
+              d="M7 8L12 3L17 8"
+              stroke="currentColor"
+              strokeWidth="1.8"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+            <path
+              d="M5 12V19C5 20.1046 5.89543 21 7 21H17C18.1046 21 19 20.1046 19 19V12"
+              stroke="currentColor"
+              strokeWidth="1.8"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+          Share your score
         </AnimatedButton>
 
         <div className="flex gap-3">
@@ -83,7 +106,7 @@ export default function CompletionScreen({ score, total, onRestart, onShare, onA
       </motion.div>
 
       <p className="text-text-secondary text-sm mt-8 max-w-[260px]">
-        Now, it's your turn — add a line from a book you've read.
+        You just played today's game — want to submit a quote for tomorrow?
       </p>
 
       <AnimatedButton
@@ -95,7 +118,7 @@ export default function CompletionScreen({ score, total, onRestart, onShare, onA
           <rect x="3" y="3" width="16" height="16" rx="2" stroke="currentColor" strokeWidth="1.5" />
           <path d="M11 7V15M7 11H15" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
         </svg>
-        Add your line
+        Submit a quote
       </AnimatedButton>
     </motion.div>
   )

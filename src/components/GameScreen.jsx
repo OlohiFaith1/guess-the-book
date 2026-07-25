@@ -4,12 +4,11 @@ import ProgressGrid from "./ProgressGrid"
 import QuoteCard from "./QuoteCard"
 import AttemptsIndicator from "./AttemptsIndicator"
 import HintButton from "./HintButton"
-import BottomActions from "./BottomActions"
 import { useSound } from "../contexts/SoundContext"
 import { fadeUp } from "../animations/motionVariants"
 
 /** Main game screen — assembles all gameplay UI pieces. */
-export default function GameScreen({ game, onShare, onAddLine }) {
+export default function GameScreen({ game, answerOptions }) {
   const {
     currentQuote,
     currentIndex,
@@ -89,6 +88,7 @@ export default function GameScreen({ game, onShare, onAddLine }) {
           revealedAnswer={currentQuote.answer}
           revealedAuthor={currentQuote.author}
           shakeInput={shakeInput}
+          answerOptions={answerOptions}
         />
 
         {!answerRevealed && !isCelebrating && (
@@ -96,13 +96,12 @@ export default function GameScreen({ game, onShare, onAddLine }) {
             <AttemptsIndicator
               attemptsLeft={attemptsLeft}
               maxAttempts={maxAttempts}
+              showTipEligible={currentIndex === 0 && attemptsLeft === maxAttempts}
             />
             <HintButton onClick={showHint} hintVisible={hintVisible} />
           </div>
         )}
       </div>
-
-      <BottomActions onShare={onShare} onAddLine={onAddLine} />
     </motion.div>
   )
 }

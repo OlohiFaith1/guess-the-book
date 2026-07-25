@@ -114,7 +114,7 @@ export default function AddLineModal({ isOpen, onClose, onSubmit }) {
       <div className="p-6">
         <div className="flex items-start justify-between mb-3">
           <h2 id="add-line-title" className="text-base font-semibold text-gray-900">
-            Add a line
+            Submit a quote
           </h2>
           <AnimatedButton
             variant="secondary"
@@ -192,7 +192,7 @@ export default function AddLineModal({ isOpen, onClose, onSubmit }) {
               disabled={submitting}
               className="px-5 py-2.5 rounded-lg text-sm"
             >
-              {submitting ? "Submitting…" : "Submit line"}
+              {submitting ? "Submitting…" : "Submit"}
             </AnimatedButton>
           </div>
         </form>

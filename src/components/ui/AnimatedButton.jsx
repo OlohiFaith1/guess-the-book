@@ -18,7 +18,8 @@ export default function AnimatedButton({
 
   const variants = {
     primary: "bg-forest text-white hover:bg-forest-light focus-visible:ring-forest/40",
-    secondary: "bg-transparent text-text-muted hover:text-gray-700 focus-visible:ring-gray-300",
+    // gray-600 keeps the muted look while clearing WCAG AA (4.5:1) on white
+    secondary: "bg-transparent text-gray-600 hover:text-gray-700 focus-visible:ring-gray-300",
     ghost: "bg-transparent text-forest hover:opacity-70 focus-visible:ring-forest/30",
   }
 

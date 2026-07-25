@@ -48,9 +48,10 @@ class SoundManager {
   loadEnabled() {
     try {
       const stored = localStorage.getItem(STORAGE_KEY)
-      return stored === null ? true : stored === "true"
+      // Sound defaults to OFF on a first visit — players opt in via the toggle.
+      return stored === null ? false : stored === "true"
     } catch {
-      return true
+      return false
     }
   }
 

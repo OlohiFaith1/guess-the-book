@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react"
+import { useState, useEffect, useCallback, useMemo } from "react"
 import { AnimatePresence } from "framer-motion"
 import PhoneFrame from "./components/PhoneFrame"
 import LoadingScreen from "./components/LoadingScreen"
@@ -7,7 +7,9 @@ import CompletionScreen from "./components/CompletionScreen"
 import ShareModal from "./components/ShareModal"
 import AddLineModal from "./components/AddLineModal"
 import SuccessToast from "./components/SuccessToast"
+import WelcomeOverlay from "./components/WelcomeOverlay"
 import { useGameState } from "./hooks/useGameState"
+import { useFirstRun } from "./hooks/useFirstRun"
 import { quotes as curatedQuotes } from "./data/quotes"
 import { submitQuote, fetchApprovedQuotes } from "./lib/quoteSubmissions"
 
@@ -32,8 +34,15 @@ export default function App() {
   const [shareOpen, setShareOpen] = useState(false)
   const [addLineOpen, setAddLineOpen] = useState(false)
   const [toastVisible, setToastVisible] = useState(false)
+  const [welcomeOpen, dismissWelcome] = useFirstRun("gtb_seen_how_to_play")
 
   const game = useGameState(allQuotes)
+
+  // Book titles for the guess-input typeahead — deduped across the active pool.
+  const answerOptions = useMemo(
+    () => [...new Set(game.sessionQuotes.map((q) => q.answer))],
+    [game.sessionQuotes],
+  )
 
   // Pull in approved + hinted community quotes once, on load.
   useEffect(() => {
@@ -85,12 +94,7 @@ export default function App() {
         )}
 
         {screen === SCREENS.GAME && (
-          <GameScreen
-            key="game"
-            game={game}
-            onShare={() => setShareOpen(true)}
-            onAddLine={() => setAddLineOpen(true)}
-          />
+          <GameScreen key="game" game={game} answerOptions={answerOptions} />
         )}
 
         {screen === SCREENS.COMPLETE && (
@@ -115,6 +119,10 @@ export default function App() {
       <SuccessToast
         message="Thanks! Your line is in for review — we'll add it once it's approved."
         visible={toastVisible}
+      />
+      <WelcomeOverlay
+        isOpen={screen === SCREENS.GAME && welcomeOpen}
+        onDismiss={dismissWelcome}
       />
     </PhoneFrame>
   )
